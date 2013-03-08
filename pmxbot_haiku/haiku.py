@@ -53,7 +53,7 @@ def main(args):
     command = get_cmd_function(arg)
     if not command:
         return  make_haiku()
-    phrase = args.split(arg)[1]
+    phrase = args.split(arg)[1].strip()
     return command(phrase)
 
 #
