@@ -85,3 +85,46 @@ class TestGetCmdFunction(object):
         assert result == haiku.add_use_sevens
 
 
+fake_model = Mock()
+fake_model.store.get_one = Mock(return_value='some phrase')
+
+
+class TestMain(object):
+
+    def setup(self):
+        self.store = Mock()
+        self.store.get_one = Mock(return_value='some phrase')
+
+    @patch('pmxbot_haiku.haiku.HaikusFives', fake_model)
+    @patch('pmxbot_haiku.haiku.HaikusSevens', fake_model)
+    def test_main_simple_fallback(self):
+        result = [i for i in haiku.main('add phrase')]
+        assert len(result) == 3
+        assert result == ['some phrase', 'some phrase', 'some phrase']
+
+    @patch('pmxbot_haiku.haiku.HaikusFives', fake_model)
+    @patch('pmxbot_haiku.haiku.HaikusSevens', fake_model)
+    def test_main_add_fives(self):
+        result = haiku.main('add-fives phrase')
+        assert result == 'Added!'
+
+    @patch('pmxbot_haiku.haiku.HaikusFives', fake_model)
+    @patch('pmxbot_haiku.haiku.HaikusSevens', fake_model)
+    def test_add_use_fives(self):
+        result = [i for i in haiku.main('add-use-fives phrase')]
+        assert len(result) == 3
+        assert result == ['phrase', 'some phrase', 'some phrase']
+
+    @patch('pmxbot_haiku.haiku.HaikusFives', fake_model)
+    @patch('pmxbot_haiku.haiku.HaikusSevens', fake_model)
+    def test_add_sevens(self):
+        result = haiku.main('add-sevens phrase')
+        assert result == 'Added!'
+
+    @patch('pmxbot_haiku.haiku.HaikusFives', fake_model)
+    @patch('pmxbot_haiku.haiku.HaikusSevens', fake_model)
+    def test_add_use_sevens(self):
+        result = [i for i in haiku.main('add-use-sevens this is a seven')]
+        assert len(result) == 3
+        assert result == ['some phrase', 'this is a seven', 'some phrase']
+
