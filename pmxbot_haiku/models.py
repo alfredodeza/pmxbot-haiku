@@ -1,8 +1,9 @@
 import random
+from pmxbot import storage
 import pmxbot
 
 
-class Haikus(pmxbot.storage.SelectableStorage):
+class Haikus(storage.SelectableStorage):
     lib = 'pmx'
 
     @classmethod
@@ -15,7 +16,7 @@ class Haikus(pmxbot.storage.SelectableStorage):
         del cls.store
 
 
-class MongoDBHaikus(Haikus, pmxbot.storage.MongoDBStorage):
+class MongoDBHaikus(Haikus, storage.MongoDBStorage):
 
     def lookup_num(self, rest=''):
         rest = rest.strip()
@@ -70,7 +71,7 @@ class MongoDBHaikus(Haikus, pmxbot.storage.MongoDBStorage):
         quote = quote.strip()
         quote_id = self.db.insert(dict(library=self.lib, text=quote))
         # see if the quote added is in the last IRC message logged
-        newest_first = [('_id', pmxbot.storage.pymongo.DESCENDING)]
+        newest_first = [('_id', storage.pymongo.DESCENDING)]
         last_message = self.db.database.logs.find_one(sort=newest_first)
         if last_message and quote in last_message['message']:
             self.db.update({'_id': quote_id},
