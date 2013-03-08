@@ -1,5 +1,5 @@
 from pmxbot.core import command
-from pmxbot_haiku.models import HaikusFives, HaikusSevens
+from pmxbot_haiku.models import HaikusFives, HaikusSevens, init_models
 
 
 valid_args = ['delete', 'add-fives',
