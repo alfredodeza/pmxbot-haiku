@@ -20,7 +20,7 @@ setup(
     keywords     = "haiku, irc, bot",
     entry_points = {
         'pmxbot_handlers': [
-            'haiku = pmxbot_haiku.haiku',
+            'haiku = pmxbot_haiku.haiku.models:Haikus.initialize',
         ],
     },
     # XXX
