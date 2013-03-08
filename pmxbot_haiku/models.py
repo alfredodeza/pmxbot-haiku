@@ -3,6 +3,11 @@ from pmxbot import storage
 import pmxbot
 
 
+def init_models():
+    HaikusSevens.initialize()
+    HaikusFives.initialize()
+
+
 class Haikus(storage.SelectableStorage):
     lib = 'pmx'
 

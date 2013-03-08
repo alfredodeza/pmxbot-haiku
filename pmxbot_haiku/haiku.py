@@ -8,9 +8,9 @@ valid_args = ['delete', 'add-fives',
 
 
 @command("haiku", doc="Get your Haiku fix from stored phrases. With no arguments"
-                      "it will get you a haiku, other commands available are:"
-                      "'add-fives', 'add-use-fives', 'add-sevens', 'add-use-sevens'"
-                      "and 'delete'." )
+                      " it will get you a haiku, other commands available are:"
+                      " 'add-fives', 'add-use-fives', 'add-sevens', 'add-use-sevens'"
+                      " and 'delete'." )
 def haiku(client, event, channel, nick, rest):
     rest = rest.strip()
     return main(rest)
