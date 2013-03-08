@@ -2,19 +2,15 @@ from pmxbot.core import command
 from pmxbot_haiku.models import HaikusFives, HaikusSevens
 
 
-_help = """
-Get your Haiku fix from stored phrases. With no arguments
-it will get you a haiku, other commands available are:
-'add-fives', 'add-use-fives', 'add-sevens', 'add-use-sevens'
-and 'delete'.
-"""
-
 valid_args = ['delete', 'add-fives',
               'add-use-fives', 'add-sevens',
               'add-use-sevens']
 
 
-@command("haiku", doc=_help)
+@command("haiku", doc="Get your Haiku fix from stored phrases. With no arguments"
+                      "it will get you a haiku, other commands available are:"
+                      "'add-fives', 'add-use-fives', 'add-sevens', 'add-use-sevens'"
+                      "and 'delete'." )
 def haiku(client, event, channel, nick, rest):
     rest = rest.strip()
     return main(rest)
