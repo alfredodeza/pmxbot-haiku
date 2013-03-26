@@ -2,6 +2,22 @@ from mock import Mock, patch
 from pmxbot_haiku import haiku
 
 
+
+class SomeFives:
+    """Used in tests for non-repeating fives.
+    """
+
+    def __init__(self, foo_until=0):
+        self.i = 0
+        self.foo_until = foo_until
+
+    def __call__(self):
+        self.i += 1
+        if self.i > self.foo_until:
+            return "wheee!!!"
+        return "foo"
+
+
 class TestMakeHaiku(object):
 
     def setup(self):
@@ -30,6 +46,31 @@ class TestMakeHaiku(object):
         fake_sevens.store.get_one = Mock(return_value=None)
         result = [i for i in haiku.make_haiku(third='foo')]
         assert result == [None, None, 'foo']
+
+    @patch('pmxbot_haiku.haiku.HaikusFives')
+    @patch('pmxbot_haiku.haiku.HaikusSevens')
+    def test_make_haiku_doesnt_reuse_fives(self, fake_sevens, fake_fives):
+        fake_fives.store.get_one = SomeFives(3)
+        fake_sevens.store.get_one = Mock(return_value='bar')
+        result = [i for i in haiku.make_haiku()]
+        assert result == ['foo', 'bar', 'wheee!!!']
+
+    @patch('pmxbot_haiku.haiku.HaikusFives')
+    @patch('pmxbot_haiku.haiku.HaikusSevens')
+    def test_make_haiku_tries_hard_not_to_resuse_fives(self, fake_sevens, \
+                                                                   fake_fives):
+        fake_fives.store.get_one = SomeFives(10)
+        fake_sevens.store.get_one = Mock(return_value='bar')
+        result = [i for i in haiku.make_haiku()]
+        assert result == ['foo', 'bar', 'wheee!!!']
+
+    @patch('pmxbot_haiku.haiku.HaikusFives')
+    @patch('pmxbot_haiku.haiku.HaikusSevens')
+    def test_make_haiku_resuses_five_if_pressed(self, fake_sevens, fake_fives):
+        fake_fives.store.get_one = SomeFives(11)
+        fake_sevens.store.get_one = Mock(return_value='bar')
+        result = [i for i in haiku.make_haiku()]
+        assert result == ['foo', 'bar', 'foo']
 
 
 class TestGetArgument(object):

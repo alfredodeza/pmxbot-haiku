@@ -60,7 +60,12 @@ def main(args):
 def make_haiku(first=None, second=None, third=None):
     first = first or HaikusFives.store.get_one()
     second = second or HaikusSevens.store.get_one()
-    third = third or HaikusFives.store.get_one()
+    if third is None:
+        for i in xrange(10):
+            third = HaikusFives.store.get_one()
+            if third != first:
+                break
+        
     yield first
     yield second
     yield third
