@@ -43,7 +43,7 @@ class MongoDBHaikus(Haikus, storage.MongoDBStorage):
     def _make_results(self, regex=None):
         if regex:
             find_opts = {'library': self.lib,
-                         '$regex': self._make_term_pattern(regex)}
+                         'text': {'$regex': self._make_term_pattern(regex)}}
         else:
             find_opts = dict(library=self.lib)
         return [
