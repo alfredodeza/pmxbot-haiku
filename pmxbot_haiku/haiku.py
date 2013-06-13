@@ -4,7 +4,7 @@ from pmxbot_haiku.models import HaikusFives, HaikusSevens, init_models
 
 valid_args = ['delete', 'add-fives',
               'add-use-fives', 'add-sevens',
-              'add-use-sevens']
+              'add-use-sevens', 'about']
 
 
 @command("haiku", doc="Get your Haiku fix from stored phrases. With no arguments"
@@ -44,6 +44,10 @@ def delete(phrase):
     pass
 
 
+def about(phrase):
+    return make_haiku(about=phrase)
+
+
 def main(args):
     arg = get_argument(args)
     command = get_cmd_function(arg)
@@ -57,15 +61,15 @@ def main(args):
 #
 
 
-def make_haiku(first=None, second=None, third=None):
-    first = first or HaikusFives.store.get_one()
-    second = second or HaikusSevens.store.get_one()
+def make_haiku(first=None, second=None, third=None, about=None):
+    first = first or HaikusFives.store.get_one(about)
+    second = second or HaikusSevens.store.get_one(about)
     if third is None:
         for i in xrange(10):
-            third = HaikusFives.store.get_one()
+            third = HaikusFives.store.get_one(about)
             if third != first:
                 break
-        
+
     yield first
     yield second
     yield third
