@@ -85,7 +85,8 @@ def get_cmd_function(cmd):
     func_map = {'delete': delete, 'add-fives': add_fives,
                 'add-use-fives': add_use_fives,
                 'add-sevens': add_sevens,
-                'add-use-sevens': add_use_sevens}
+                'add-use-sevens': add_use_sevens,
+                'about': about}
     return func_map.get(cmd)
 
 
