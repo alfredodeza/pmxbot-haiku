@@ -11,7 +11,7 @@ class SomeFives:
         self.i = 0
         self.foo_until = foo_until
 
-    def __call__(self):
+    def __call__(self, about=None):
         self.i += 1
         if self.i > self.foo_until:
             return "wheee!!!"
