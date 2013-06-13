@@ -1,6 +1,7 @@
 import random
 from pmxbot import storage
 import pmxbot
+import re
 
 
 def init_models():
@@ -36,14 +37,27 @@ class MongoDBHaikus(Haikus, storage.MongoDBStorage):
             qt, i, n = self.quoteLookup()
         return qt, i, n
 
-    def get_one(self):
-        results = [
+    def _make_term_pattern(self, term):
+        return re.compile(term, re.I)
+
+    def _make_results(self, regex=None):
+        if regex:
+            find_opts = {'library': self.lib,
+                         '$regex': self._make_term_pattern(regex)}
+        else:
+            find_opts = dict(library=self.lib)
+        return [
             row['text'] for row in
-            self.db.find(dict(library=self.lib)).sort('_id')
+            self.db.find(find_opts).sort('_id')
         ]
-        total = len(results)
-        if not total:
+
+    def get_one(self, about=None):
+        results = self._make_results(about)
+        if not len(results) and not about:
             return ''
+        else:
+            results = self._make_results()
+        total = len(results)
         random_index = random.randrange(total)
         return results[random_index]
 
