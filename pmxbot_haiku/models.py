@@ -41,9 +41,10 @@ class MongoDBHaikus(Haikus, storage.MongoDBStorage):
         return re.compile(term, re.I)
 
     def _make_results(self, regex=None):
+        # have tried with 'text' in find_opts but not dice
         if regex:
             find_opts = {'library': self.lib,
-                         'text': {'$regex': self._make_term_pattern(regex)}}
+                         'message': {'$regex': self._make_term_pattern(regex)}}
         else:
             find_opts = dict(library=self.lib)
         return [
