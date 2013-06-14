@@ -69,6 +69,12 @@ def make_haiku(first=None, second=None, third=None, about=None):
             third = HaikusFives.store.get_one(about)
             if third != first:
                 break
+        # if we didn't break still just try not to use about
+        if third == first:
+            for i in xrange(10):
+                third = HaikusFives.store.get_one()
+                if third != first:
+                    break
 
     yield first
     yield second
