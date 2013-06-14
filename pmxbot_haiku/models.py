@@ -40,35 +40,38 @@ class MongoDBHaikus(Haikus, storage.MongoDBStorage):
     def _make_term_pattern(self, term):
         return re.compile(term, re.I)
 
-    def _make_results(self, regex=None):
-        if regex:
-            pattern = self._make_term_pattern(regex)
-            find_opts = dict(library=self.lib)
-            return  [
-                row['text'] for row in
-                self.db.find(find_opts).sort('_id')
-                if pattern.search(row['text'])
-            ]
-
+    def _make_results(self):
+#        if regex:
+#            pattern = self._make_term_pattern(regex)
+#            find_opts = dict(library=self.lib)
+#            return  [
+#                row['text'] for row in
+#                self.db.find(find_opts).sort('_id')
+#                if pattern.search(row['text'])
+#            ]
+#
         # have tried with 'text' in find_opts but not dice
         # this obviously doesn't work. Lets ping jaraco :(
 #        if regex:
 #            find_opts = {'message': {'$regex': self._make_term_pattern(regex)}}
 #            #find_opts = {'library': self.lib,
 #            #             'message': {'$regex': self._make_term_pattern(regex)}}
-        else:
-            find_opts = dict(library=self.lib)
+        find_opts = dict(library=self.lib)
         return [
             row['text'] for row in
             self.db.find(find_opts).sort('_id')
         ]
 
     def get_one(self, about=None):
-        results = self._make_results(about)
+        results = self._make_results()
         if not len(results) and not about:
             return ''
-        else:
-            results = self._make_results()
+        if about:
+            pattern = self._make_term_pattern(about)
+            pattern_results = [i for i in results if pattern.search(i)]
+            if len(pattern_results):
+                results = pattern_results
+
         total = len(results)
         random_index = random.randrange(total)
         return results[random_index]
