@@ -64,14 +64,6 @@ class TestMakeHaiku(object):
         result = [i for i in haiku.make_haiku()]
         assert result == ['foo', 'bar', 'wheee!!!']
 
-    @patch('pmxbot_haiku.haiku.HaikusFives')
-    @patch('pmxbot_haiku.haiku.HaikusSevens')
-    def test_make_haiku_resuses_five_if_pressed(self, fake_sevens, fake_fives):
-        fake_fives.store.get_one = SomeFives(11)
-        fake_sevens.store.get_one = Mock(return_value='bar')
-        result = [i for i in haiku.make_haiku()]
-        assert result == ['foo', 'bar', 'foo']
-
 
 class TestGetArgument(object):
 
