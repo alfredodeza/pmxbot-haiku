@@ -1,3 +1,3 @@
 pmxbot Haiku
 ============
-Get ``pmxbot`` to handle haiku goodness from (previously saved) phrases.
+A ``pmxbot`` plugin that provides MongoDB collections for handling haiku poems.
