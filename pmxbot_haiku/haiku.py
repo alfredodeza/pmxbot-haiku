@@ -65,13 +65,13 @@ def make_haiku(first=None, second=None, third=None, about=None):
     first = first or HaikusFives.store.get_one(about)
     second = second or HaikusSevens.store.get_one(about)
     if third is None:
-        for i in xrange(10):
+        for i in range(10):
             third = HaikusFives.store.get_one(about)
             if third != first:
                 break
         # if we didn't break still just try not to use about
         if third == first:
-            for i in xrange(10):
+            for i in range(10):
                 third = HaikusFives.store.get_one()
                 if third != first:
                     break
